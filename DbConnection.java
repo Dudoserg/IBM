@@ -173,6 +173,38 @@ public class DbConnection extends DbConnectionHelper
             return 1;
     }
 
+    
+    public int checkCurrentPosition(Integer ID_Position) {
+        Statement statement = null;
+        ResultSet resSet = null;
+        String id ="";
+        String position = "";
+        String sql = "SELECT * FROM position  WHERE ID_Position = '" + ID_Position.toString() +"'";
+        try {
+            statement = this.getDbConnection().createStatement();
+            statement.setFetchSize(100);
+            resSet = statement.executeQuery(sql);
+
+            while (resSet.next()) {
+                id = resSet.getString("ID_Position");
+                position = resSet.getString("PositionName");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                this.dbConnection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        if(id.equals(""))
+            return 0;
+        else
+            return 1;
+    }
 
     public void delCurPos(String pos) {
       PreparedStatement  pstmt  = null;

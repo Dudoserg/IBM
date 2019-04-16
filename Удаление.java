@@ -46,28 +46,78 @@ public class Удаление extends УдалениеHelper
 		рекламноеАгентствоwindow().inputChars("88");
 		рекламноеАгентствоwindow().click(atPoint(324,329));
 		
-		DbConnection dbConnection = new DbConnection();
-		dbConnection.getDbConnection();
-		ArrayList<Position> positions = dbConnection.getAllPosition();
-		
-		
-		
 		// Window: java.exe: 
 		glassWndClassGlassWindowClass3().click(atPoint(719,178));
 
-	
 		
 		
-		// клик в поле
-		glassWndClassGlassWindowClass3().click(atPoint(618,214));
-		// ввод
-		glassWndClassGlassWindowClass3().inputKeys("^ф{BKSP}84");
-		//кнопка удалить
-		glassWndClassGlassWindowClass3().click(atPoint(647,244));
-		glassWndClassGlassWindowClass3(ANY,MAY_EXIT).click(CLOSE_BUTTON);
-		
+		DbConnection dbConnection = new DbConnection();
+		dbConnection.getDbConnection();
+        ArrayList<Position> positions = dbConnection.getAllPosition();
+
+        int countForDelete = 5;
+        int size = positions.size() - countForDelete;
+        for(int i = 0 ; i < size; i++){
+            positions.remove((int) (Math.random() * positions.size()));
+        }
+        for(int i = 0 ; i < positions.size(); i++){
+        	System.out.println(positions.get(i).getId() + "   " + positions.get(i).getPosition());
+        }
+
+
+        for(int i = 0 ; i < positions.size(); i++){	
+			// клик в поле
+			glassWndClassGlassWindowClass3().click(atPoint(618,214));
+			// ввод
+			glassWndClassGlassWindowClass3().inputKeys("^a{BKSP}");
+			glassWndClassGlassWindowClass3().inputKeys("^a{BKSP}" + positions.get(i).getId());
+			System.out.println(positions.get(i).getId());
+			//кнопка удалить
+			glassWndClassGlassWindowClass3().click(atPoint(647,244));		
+        }
+        glassWndClassGlassWindowClass3(ANY,MAY_EXIT).click(CLOSE_BUTTON);
 		// Window: java.exe: Рекламное агентство
 		рекламноеАгентствоwindow().click(atPoint(624,27));
+		
+		//Теперь проверим, есть ли такие записи в бд
+		
+		// Проверяем добавились ли все пользователи		
+		boolean flagNOTdelete = false;
+		for(int i = 0 ; i < positions.size(); i++){
+			int x = dbConnection.checkCurrentPosition(positions.get(i).getPosition());
+			//System.out.println(x);
+			if( x == 1)
+				flagNOTdelete = true;
+		}
+		if( flagNOTdelete == false)
+			System.out.println("Все удалилось");
+		else
+			System.out.println("не все удалилось");
 	}
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
