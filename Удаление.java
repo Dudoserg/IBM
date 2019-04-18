@@ -55,6 +55,8 @@ public class Удаление extends УдалениеHelper
 		dbConnection.getDbConnection();
         ArrayList<Position> positions = dbConnection.getAllPosition();
 
+        
+        // оставляем в списке 5 рандомных записей
         int countForDelete = 5;
         int size = positions.size() - countForDelete;
         for(int i = 0 ; i < size; i++){
@@ -64,7 +66,7 @@ public class Удаление extends УдалениеHelper
         	System.out.println(positions.get(i).getId() + "   " + positions.get(i).getPosition());
         }
 
-
+        // удаляем записи
         for(int i = 0 ; i < positions.size(); i++){	
 			// клик в поле
 			glassWndClassGlassWindowClass3().click(atPoint(618,214));
